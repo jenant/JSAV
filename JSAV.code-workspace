@@ -1,0 +1,8 @@
+{
+  "folders": [
+    { "name": "JSAV", "path": "." }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python"
+  }
+}
