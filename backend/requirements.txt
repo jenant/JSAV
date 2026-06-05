@@ -1,0 +1,9 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+sqlalchemy==2.0.35
+groq>=0.13.0
+pillow>=11.0.0
+pytesseract==0.3.13
+python-dotenv==1.0.1
+alembic==1.13.3
