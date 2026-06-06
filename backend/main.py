@@ -85,6 +85,31 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
+# ── Reset ──────────────────────────────────────────────────────────────────────
+
+RESETTABLE_COLUMNS = {
+    "family", "friends", "relationships", "mental_health",
+    "finances", "academics_career", "hobbies", "physical_health",
+}
+
+@app.post("/reset/all")
+def reset_all(db: Session = Depends(get_db)):
+    """Delete every journal entry."""
+    db.query(JournalEntry).delete()
+    db.commit()
+    return {"ok": True}
+
+@app.post("/reset/category/{category}")
+def reset_category(category: str, db: Session = Depends(get_db)):
+    """Set one category's scores to null across all entries."""
+    if category not in RESETTABLE_COLUMNS:
+        raise HTTPException(status_code=400, detail=f"Unknown category: {category}")
+    for entry in db.query(JournalEntry).all():
+        setattr(entry, category, None)
+    db.commit()
+    return {"ok": True}
+
+
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
 async def _create_entry(raw_text, image_bytes, filename, entry_date_str, db):
@@ -118,11 +143,13 @@ async def _create_entry_with_scores(raw_text, scores, image_bytes, filename, ent
         overall_sentiment=scores.get("overall_sentiment", 0),
         overall_mood=scores.get("overall_mood"),
         family=scores.get("family"),
+        friends=scores.get("friends"),
         relationships=scores.get("relationships"),
+        mental_health=scores.get("mental_health"),
         finances=scores.get("finances"),
-        mental=scores.get("mental"),
-        hobbies=scores.get("hobbies"),
         academics_career=scores.get("academics_career"),
+        hobbies=scores.get("hobbies"),
+        physical_health=scores.get("physical_health"),
         analysis_notes=scores.get("notes"),
     )
     db.add(entry)
@@ -141,11 +168,13 @@ def _serialise(e: JournalEntry) -> dict:
         "overall_mood": e.overall_mood,
         "scores": {
             "family": e.family,
+            "friends": e.friends,
             "relationships": e.relationships,
+            "mental_health": e.mental_health,
             "finances": e.finances,
-            "mental": e.mental,
-            "hobbies": e.hobbies,
             "academics_career": e.academics_career,
+            "hobbies": e.hobbies,
+            "physical_health": e.physical_health,
         },
         "analysis_notes": e.analysis_notes,
         "image_path": e.image_path,
