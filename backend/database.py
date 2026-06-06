@@ -27,11 +27,13 @@ class JournalEntry(Base):
 
     # Life category scores (-1 to 1)
     family = Column(Float, nullable=True)
+    friends = Column(Float, nullable=True)
     relationships = Column(Float, nullable=True)
+    mental_health = Column(Float, nullable=True)
     finances = Column(Float, nullable=True)
-    mental = Column(Float, nullable=True)
-    hobbies = Column(Float, nullable=True)
     academics_career = Column(Float, nullable=True)
+    hobbies = Column(Float, nullable=True)
+    physical_health = Column(Float, nullable=True)
 
     # Raw analysis from Claude
     analysis_notes = Column(Text, nullable=True)
