@@ -12,10 +12,9 @@ def preprocess(image: Image.Image) -> Image.Image:
     4. Increase contrast — separates ink from paper more clearly
     5. Slightly increase brightness — lifts faint pencil/light ink
     """
-    # Grayscale
+
     image = image.convert("L")
 
-    # Upscale to at least 2400px on the longest side
     max_side = max(image.width, image.height)
     if max_side < 2400:
         scale = 2400 / max_side
@@ -24,14 +23,9 @@ def preprocess(image: Image.Image) -> Image.Image:
             Image.LANCZOS,
         )
 
-    # Sharpen twice for crisper strokes
     image = image.filter(ImageFilter.SHARPEN)
     image = image.filter(ImageFilter.SHARPEN)
-
-    # Boost contrast
     image = ImageEnhance.Contrast(image).enhance(2.0)
-
-    # Slight brightness lift
     image = ImageEnhance.Brightness(image).enhance(1.2)
 
     return image
@@ -41,8 +35,5 @@ def extract_text_from_bytes(image_bytes: bytes) -> str:
     """Extract handwritten text from image bytes using Tesseract with preprocessing."""
     image = Image.open(io.BytesIO(image_bytes))
     image = preprocess(image)
-
-    # PSM 6 = uniform block of text (good for journal pages)
-    # OEM 1 = LSTM neural net engine (most accurate)
     text = pytesseract.image_to_string(image, config="--psm 6 --oem 1")
     return text.strip()
