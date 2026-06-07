@@ -31,8 +31,6 @@ def on_startup():
     init_db()
 
 
-# ── Entries ────────────────────────────────────────────────────────────────────
-
 @app.get("/entries")
 def list_entries(db: Session = Depends(get_db)):
     entries = db.query(JournalEntry).order_by(JournalEntry.entry_date).all()
@@ -85,8 +83,6 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
-# ── Reset ──────────────────────────────────────────────────────────────────────
-
 RESETTABLE_COLUMNS = {
     "family", "friends", "relationships", "mental_health",
     "finances", "academics_career", "hobbies", "physical_health",
@@ -109,8 +105,6 @@ def reset_category(category: str, db: Session = Depends(get_db)):
     db.commit()
     return {"ok": True}
 
-
-# ── Helpers ────────────────────────────────────────────────────────────────────
 
 async def _create_entry(raw_text, image_bytes, filename, entry_date_str, db):
     try:
