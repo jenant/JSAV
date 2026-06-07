@@ -22,10 +22,10 @@ class JournalEntry(Base):
     entry_date = Column(DateTime, default=datetime.utcnow)
     image_path = Column(String, nullable=True)
     raw_text = Column(Text, nullable=False)
-    overall_sentiment = Column(Float, default=0.0)  # -1 to 1
+    overall_sentiment = Column(Float, default=0.0)  
     overall_mood = Column(String, nullable=True)
 
-    # Life category scores (-1 to 1)
+# scoring system for each of the categories 
     family = Column(Float, nullable=True)
     friends = Column(Float, nullable=True)
     relationships = Column(Float, nullable=True)
@@ -35,7 +35,6 @@ class JournalEntry(Base):
     hobbies = Column(Float, nullable=True)
     physical_health = Column(Float, nullable=True)
 
-    # Raw analysis from Claude
     analysis_notes = Column(Text, nullable=True)
 
 
