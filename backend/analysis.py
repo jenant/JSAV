@@ -8,6 +8,7 @@ load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 MODEL = "llama-3.3-70b-versatile"
 
+# system prompting for analysis 
 SYSTEM_PROMPT = """You are an empathetic journal analyst. Your job is to score a journal entry across eight life categories on a scale from -5.0 to +5.0.
 
 ━━━ SCORING SCALE ━━━
@@ -81,7 +82,6 @@ def analyse_journal_entry(text: str) -> dict:
 
     raw = response.choices[0].message.content.strip()
 
-    # Strip markdown code fences if present
     if raw.startswith("```"):
         raw = raw.split("```")[1]
         if raw.startswith("json"):
