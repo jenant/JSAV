@@ -10,7 +10,7 @@ MODEL = "llama-3.3-70b-versatile"
 
 # system prompting for analysis 
 SYSTEM_PROMPT = """You are an empathetic journal analyst. Your job is to score a journal entry across eight life categories on a scale from -5.0 to +5.0.
-
+#completley change scoring, make drag bar for sensitivity 
 ━━━ SCORING SCALE ━━━
 Scores range from -1.0 to +1.0. ±1.0 is reserved for only the most extreme, life-defining moments. Most entries should score in the ±0.1 to ±0.5 range.
 
